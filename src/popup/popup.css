@@ -1,0 +1,34 @@
+body {
+  width: 250px; /* Define uma largura fixa para o popup */
+  padding: 10px 20px;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  margin: 0;
+}
+
+.container {
+  text-align: center; /* Centraliza todo o texto */
+}
+
+h1 {
+  font-size: 18px;
+  color: #333;
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+
+p {
+  font-size: 14px;
+  color: #555;
+  margin: 5px 0;
+}
+
+#time-display {
+  font-size: 28px;
+  font-weight: bold;
+  color: #0057b8; /* Um azul para destacar */
+  margin-top: 5px;
+  padding: 10px;
+  background-color: #eef4ff;
+  border-radius: 8px;
+}
