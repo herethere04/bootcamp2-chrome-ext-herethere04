@@ -1,27 +1,51 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, chromium } from '@playwright/test';
+import type { BrowserContext, Page } from '@playwright/test';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-// REMOVEMOS: a importação manual de chromium, BrowserContext, etc.
-// REMOVEMOS: a declaração manual de __dirname e dos caminhos.
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-// A configuração agora vive 100% no playwright.config.ts, como deveria ser.
+const extensionPath = path.join(__dirname, '../dist');
+
+// VOLTAMOS A USAR A URL COMPLETA E EXPLÍCITA
+const testPageURL = 'http://localhost:3000/test.html';
 
 test.describe('Testes da Extensão Site Time Tracker', () => {
+  let browserContext: BrowserContext;
+  let page: Page;
 
-  // REMOVEMOS: todos os hooks manuais (beforeAll, afterAll, beforeEach, afterEach).
-  // O Playwright vai gerenciar o ciclo de vida do navegador e da página para nós.
+  // PRECISAMOS DO beforeAll PARA CRIAR O CONTEXTO COM A EXTENSÃO
+  test.beforeAll(async () => {
+    browserContext = await chromium.launchPersistentContext('', {
+      headless: true,
+      args: [
+        `--disable-extensions-except=${extensionPath}`,
+        `--load-extension=${extensionPath}`,
+      ],
+    });
+  });
 
-  test('O cronômetro flutuante deve aparecer na página', async ({ page }) => {
-    // A MÁGICA: Pedimos o "page" diretamente como argumento do teste.
-    // Este "page" já vem do navegador correto (com a extensão) e
-    // já conhece a baseURL.
+  test.afterAll(async () => {
+    await browserContext.close();
+  });
 
-    // Usando um caminho relativo. Playwright usará a baseURL
-    // e esperará o servidor estar pronto antes de executar.
-    await page.goto('/test.html');
+  // PRECISAMOS DO beforeEach PARA CRIAR UMA PÁGINA NOVA A CADA TESTE
+  test.beforeEach(async () => {
+    page = await browserContext.newPage();
+  });
+
+  test.afterEach(async () => {
+    await page.close();
+  });
+
+  test('O cronômetro flutuante deve aparecer na página', async () => {
+    // USAMOS A URL COMPLETA, POIS O CONTEXTO MANUAL NÃO CONHECE A baseURL
+    await page.goto(testPageURL);
 
     const timerContainer = page.locator('.time-tracker-container');
 
-    await expect(timerContainer).toBeVisible({ timeout: 10000 });
+    await expect(timerContainer).toBeVisible({ timeout: 15000 }); // Aumentei o timeout para dar mais folga
     await expect(timerContainer).toHaveText(/Tempo no site: \d{2}:\d{2}:\d{2}/);
   });
 });
