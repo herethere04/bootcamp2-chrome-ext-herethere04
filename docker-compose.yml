@@ -10,7 +10,6 @@ services:
       - CI=true
     command: >
       sh -c "
-        npx http-server ./tests -p 3000 --silent & 
-        npx wait-on http://localhost:3000/test.html && 
-        npx playwright test --reporter=line
+        xvfb-run --auto-servernum --server-args='-screen 0 1280x960x24' \
+        sh -c 'npx http-server ./tests -p 3000 --silent & npx wait-on http://localhost:3000/test.html && npx playwright test --reporter=line'
       "
