@@ -9,17 +9,17 @@ const __dirname = path.dirname(__filename);
 // Caminho para a pasta da extensão JÁ CONSTRUÍDA
 const extensionPath = path.join(__dirname, '../dist'); 
 
-// URL completa para a nossa página de teste, servida pelo webServer
+// URL completa para a página de teste, que será servida pelo http-server
 const testPageURL = 'http://localhost:3000/test.html';
 
 test.describe('Testes da Extensão Site Time Tracker', () => {
   let browserContext: BrowserContext;
   let page: Page;
 
-  // ANTES DE TUDO: Inicia um navegador com a extensão já carregada
+  // ANTES DE TUDO: Inicia um navegador persistente com a extensão carregada
   test.beforeAll(async () => {
     browserContext = await chromium.launchPersistentContext('', {
-      headless: false, // Repetido aqui para garantir
+      headless: false, // Obrigatório para a extensão funcionar
       args: [
         `--disable-extensions-except=${extensionPath}`,
         `--load-extension=${extensionPath}`,
@@ -32,7 +32,7 @@ test.describe('Testes da Extensão Site Time Tracker', () => {
     await browserContext.close();
   });
 
-  // ANTES DE CADA TESTE: Cria uma página limpa dentro do navegador com a extensão
+  // ANTES DE CADA TESTE: Cria uma página limpa
   test.beforeEach(async () => {
     page = await browserContext.newPage();
   });
@@ -45,11 +45,12 @@ test.describe('Testes da Extensão Site Time Tracker', () => {
   test('O cronômetro flutuante deve aparecer na página', async () => {
     await page.goto(testPageURL);
     
-    // Pequena pausa explícita para dar tempo à extensão de injetar o script
-    await page.waitForTimeout(1500); 
-
     const timerContainer = page.locator('.time-tracker-container');
+    
+    // O teste vai esperar até 15 segundos para o elemento aparecer
     await expect(timerContainer).toBeVisible({ timeout: 15000 });
+    
+    // E então verifica o texto
     await expect(timerContainer).toHaveText(/Tempo no site: \d{2}:\d{2}:\d{2}/);
   });
 });
