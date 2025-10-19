@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="cronometro.ico" type="image/x-icon">
+  <title>Site Time Tracker — Extensão para Chrome</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 40px auto; padding: 0 20px; }
+    header, section { margin-bottom: 40px; }
+    h1 { font-size: 2.5em; text-align: center; }
+    h2 { border-bottom: 2px solid #eee; padding-bottom: 10px; }
+    p { color: #555; }
+    a { color: #007bff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .button { display: inline-block; background-color: #007bff; color: white; padding: 12px 20px; border-radius: 5px; text-align: center; font-weight: bold; }
+    .button:hover { background-color: #0056b3; color: white; text-decoration: none; }
+    code { background-color: #f4f4f4; padding: 2px 5px; border-radius: 3px; }
+    .screenshot { max-width: 100%; border: 1px solid #ddd; border-radius: 5px; margin-top: 15px; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Site Time Tracker</h1>
+    <p style="text-align: center; font-size: 1.2em;">
+      Nunca mais perca a noção do tempo! Descubra exatamente quantos minutos (ou horas) você dedica a cada site.
+    </p>
+  </header>
+
+  <section style="text-align: center;">
+    <a href="https://github.com/<seu-usuario>/<seu-repositorio>/releases/latest/download/extensao.zip" class="button">
+      Baixar a Extensão (.zip)
+    </a>
+  </section>
+  
+  <section>
+    <h2>Como funciona?</h2>
+    <p>
+      A extensão adiciona um pequeno cronômetro flutuante no canto da tela, mostrando em tempo real (HH:MM:SS) quanto tempo você está na página ativa. Ao clicar no ícone da extensão, você pode ver um resumo do tempo gasto naquele domínio.
+    </p>
+    </section>
+
+  <section>
+    <h2>Instalação Manual (Modo Desenvolvedor)</h2>
+    <ol>
+      <li>Baixe e descompacte o arquivo <code>.zip</code>.</li>
+      <li>Abra o Google Chrome e acesse a página de extensões: <code>chrome://extensions</code>.</li>
+      <li>Ative o <strong>"Modo de desenvolvedor"</strong> no canto superior direito.</li>
+      <li>Clique em <strong>"Carregar sem compactação"</strong> (Load unpacked) e selecione a pasta que você descompactou.</li>
+      <li>Pronto! A extensão estará ativa.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Permissões Necessárias</h2>
+    <ul>
+      <li><code>storage</code>: Para salvar o tempo gasto em cada site no seu navegador.</li>
+      <li><code>tabs</code>: Para saber qual site você está visitando e quando você troca de aba.</li>
+      <li><code>alarms</code>: Para garantir que o cronômetro funcione de forma precisa e eficiente.</li>
+    </ul>
+  </section>
+
+</body>
+</html>

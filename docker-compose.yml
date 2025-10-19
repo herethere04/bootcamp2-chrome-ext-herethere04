@@ -1,0 +1,8 @@
+services:
+  e2e:
+    build: .
+    image: site-time-tracker/e2e:latest
+    # Garante que o Chromium tenha memória compartilhada suficiente
+    shm_size: '2gb' 
+    # Roda os testes
+    command: npm test
