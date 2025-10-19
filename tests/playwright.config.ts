@@ -2,10 +2,11 @@ import { defineConfig, devices } from '@playwright/test';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-// Maneira moderna de obter o __dirname em ES Modules
+// Correção para obter o __dirname em ES Modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Caminho para a extensão descompactada
 const extensionPath = path.join(__dirname, '../dist');
 
 export default defineConfig({
