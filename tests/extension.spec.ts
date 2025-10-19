@@ -6,21 +6,20 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Caminho correto para a pasta da extensão construída
+// Caminho para a pasta da extensão JÁ CONSTRUÍDA
 const extensionPath = path.join(__dirname, '../dist'); 
 
-// URL completa para a nossa página de teste local
+// URL completa para a nossa página de teste, servida pelo webServer
 const testPageURL = 'http://localhost:3000/test.html';
 
 test.describe('Testes da Extensão Site Time Tracker', () => {
   let browserContext: BrowserContext;
   let page: Page;
 
-  // ANTES DE TUDO: Inicia um navegador persistente com a extensão carregada
+  // ANTES DE TUDO: Inicia um navegador com a extensão já carregada
   test.beforeAll(async () => {
     browserContext = await chromium.launchPersistentContext('', {
-      // Obrigatório: Extensões MV3 não funcionam em modo headless
-      headless: false, 
+      headless: false, // Repetido aqui para garantir
       args: [
         `--disable-extensions-except=${extensionPath}`,
         `--load-extension=${extensionPath}`,
@@ -28,12 +27,12 @@ test.describe('Testes da Extensão Site Time Tracker', () => {
     });
   });
 
-  // DEPOIS DE TUDO: Fecha o navegador
+  // DEPOIS DE TUDO: Fecha o navegador para limpar o processo
   test.afterAll(async () => {
     await browserContext.close();
   });
 
-  // ANTES DE CADA TESTE: Cria uma nova página limpa
+  // ANTES DE CADA TESTE: Cria uma página limpa dentro do navegador com a extensão
   test.beforeEach(async () => {
     page = await browserContext.newPage();
   });
@@ -46,8 +45,8 @@ test.describe('Testes da Extensão Site Time Tracker', () => {
   test('O cronômetro flutuante deve aparecer na página', async () => {
     await page.goto(testPageURL);
     
-    // Pequena pausa para garantir que o content script teve tempo de ser injetado
-    await page.waitForTimeout(1000); 
+    // Pequena pausa explícita para dar tempo à extensão de injetar o script
+    await page.waitForTimeout(1500); 
 
     const timerContainer = page.locator('.time-tracker-container');
     await expect(timerContainer).toBeVisible({ timeout: 15000 });
