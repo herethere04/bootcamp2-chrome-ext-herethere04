@@ -7,8 +7,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const extensionPath = path.join(__dirname, '../dist');
-// MUDANÇA: Agora usamos a URL do servidor web local
-const testPageURL = 'http://localhost:3000/test.html';
 
 test.describe('Testes da Extensão Site Time Tracker', () => {
   let browserContext: BrowserContext;
@@ -37,8 +35,9 @@ test.describe('Testes da Extensão Site Time Tracker', () => {
   });
 
   test('O cronômetro flutuante deve aparecer na página', async () => {
-    // MUDANÇA: Navegando para a URL do servidor local
-    await page.goto(testPageURL);
+    // MUDANÇA: Usando um caminho relativo. Playwright usará a baseURL
+    // e esperará o servidor estar pronto antes de executar.
+    await page.goto('/test.html');
 
     const timerContainer = page.locator('.time-tracker-container');
 

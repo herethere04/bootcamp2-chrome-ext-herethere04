@@ -11,20 +11,23 @@ export default defineConfig({
   testDir: './',
   reporter: [['html', { outputFolder: 'playwright-report', open: 'never' }]],
 
-  // ====================================================================
-  // >> INÍCIO DA CORREÇÃO <<
   // Inicia um servidor web local antes de rodar os testes
   webServer: {
-    command: 'npx http-server ./tests -p 3000 --cors', // Serve a pasta 'tests' na porta 3000
-    port: 3000,
-    timeout: 120 * 1000,
+    command: 'npx http-server ./tests -p 3000 --cors',
+    url: 'http://localhost:3000', // Playwright vai esperar por esta URL
     reuseExistingServer: !process.env.CI,
   },
-  // >> FIM DA CORREÇÃO <<
 
   use: {
     headless: true,
+    // ====================================================================
+    // >> CORREÇÃO PRINCIPAL <<
+    // Define a URL base para todos os testes. Playwright vai garantir que
+    // o webServer esteja pronto antes de continuar.
+    baseURL: 'http://localhost:3000',
+    // ====================================================================
   },
+
   projects: [
     {
       name: 'chromium-with-extension',
