@@ -1,51 +1,22 @@
-name: Teste e Build da Extensão
+name: E2E Tests
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ main ]
 
 jobs:
-  build-and-test:
+  e2e:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout do código
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Configurar Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      # ====================================================================
-      # PASSO ADICIONADO PARA GARANTIR QUE TUDO SEJA INSTALADO DO ZERO
-      - name: Limpar cache do npm 
-        run: npm cache clean --force
-      # ====================================================================
-
-      - name: Instalar dependências
-        run: npm install
-
-      - name: Instalar dependências do Playwright
-        run: npx playwright install --with-deps chromium
-
-      - name: Rodar build e testes E2E
-        run: npm test
-
-      - name: Upload do relatório do Playwright
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 7
-
-      - name: Upload do pacote da extensão
-        if: success() # Apenas faz upload do zip se os testes passarem
-        uses: actions/upload-artifact@v4
-        with:
-          name: extension-package
-          path: dist/extension.zip
-          retention-days: 30
+      # A etapa de testes agora é simplificada para usar o Docker Compose
+      - name: Run tests with Docker
+        run: docker compose up --build --abort-on-container-exit
+      
+      # Opcional: Upload do relatório se ele for gerado dentro do contêiner.
+      # Para isso funcionar, precisaríamos de um volume no docker-compose.
+      # Por enquanto, vamos manter o foco em fazer os testes passarem.
