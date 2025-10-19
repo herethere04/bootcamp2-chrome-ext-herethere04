@@ -14,14 +14,12 @@ Timer flutuante na página:
 
 ![Screenshot do cronômetro flutuante](icons/time%20tracker%202.png)
 
-![Screenshot do cronômetro flutuante](icons/time%20tracker%204.png)
-
 
 Popup com o resumo do tempo:
 
 ![Screenshot do cronômetro flutuante](icons/time%20tracker.png)
 
-![Screenshot do cronômetro flutuante](icons/time%20tracker_3.png)
+
 
 ✨ Funcionalidades Principais
 Monitoramento em Tempo Real: O tempo é contado por segundo enquanto a aba do site estiver ativa.
