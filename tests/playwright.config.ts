@@ -10,7 +10,7 @@ export default defineConfig({
     timeout: 60 * 1000,
   },
   use: {
-    headless: true,
+    headless: false, // Extensões MV3 exigem que o modo headless seja desativado
   },
   // O código do seu teste (extension.spec.ts) já está correto para essa abordagem,
   // usando a URL completa e o contexto manual.
