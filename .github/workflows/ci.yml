@@ -1,0 +1,49 @@
+name: Teste e Build da Extensão
+
+on:
+  # Aciona o workflow em pushes ou pull requests para o branch main
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  # Nome do job
+  build-and-test:
+    # O tipo de máquina virtual para rodar o job
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Baixa o código do seu repositório para a máquina virtual
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      # 2. Configura o ambiente Node.js na versão 20
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # 3. Instala as dependências do projeto (Playwright, etc.)
+      - name: Instalar dependências
+        run: npm install
+
+      # 4. Instala as dependências do Playwright (o navegador Chromium)
+      - name: Instalar dependências do Playwright
+        run: npx playwright install --with-deps chromium
+
+      # 5. Roda o comando "npm test", que por sua vez executa o build e os testes E2E
+      - name: Rodar build e testes E2E
+        run: npm test
+
+      # 6. Faz o upload do relatório de testes como um "artefato"
+      # O "if: always()" garante que o relatório seja salvo mesmo se os testes falharem
+      - name: Upload do relatório do Playwright
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
+      # 7. Faz o upload do arquivo .zip da extensão como um "
