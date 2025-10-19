@@ -1,41 +1,21 @@
-import { test, expect, chromium } from '@playwright/test';
-import type { BrowserContext, Page } from '@playwright/test';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import { test, expect } from '@playwright/test';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// REMOVEMOS: a importação manual de chromium, BrowserContext, etc.
+// REMOVEMOS: a declaração manual de __dirname e dos caminhos.
 
-const extensionPath = path.join(__dirname, '../dist');
+// A configuração agora vive 100% no playwright.config.ts, como deveria ser.
 
 test.describe('Testes da Extensão Site Time Tracker', () => {
-  let browserContext: BrowserContext;
-  let page: Page;
 
-  test.beforeAll(async () => {
-    browserContext = await chromium.launchPersistentContext('', {
-      headless: true,
-      args: [
-        `--disable-extensions-except=${extensionPath}`,
-        `--load-extension=${extensionPath}`,
-      ],
-    });
-  });
+  // REMOVEMOS: todos os hooks manuais (beforeAll, afterAll, beforeEach, afterEach).
+  // O Playwright vai gerenciar o ciclo de vida do navegador e da página para nós.
 
-  test.afterAll(async () => {
-    await browserContext.close();
-  });
+  test('O cronômetro flutuante deve aparecer na página', async ({ page }) => {
+    // A MÁGICA: Pedimos o "page" diretamente como argumento do teste.
+    // Este "page" já vem do navegador correto (com a extensão) e
+    // já conhece a baseURL.
 
-  test.beforeEach(async () => {
-    page = await browserContext.newPage();
-  });
-
-  test.afterEach(async () => {
-    await page.close();
-  });
-
-  test('O cronômetro flutuante deve aparecer na página', async () => {
-    // MUDANÇA: Usando um caminho relativo. Playwright usará a baseURL
+    // Usando um caminho relativo. Playwright usará a baseURL
     // e esperará o servidor estar pronto antes de executar.
     await page.goto('/test.html');
 
