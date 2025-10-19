@@ -19,18 +19,20 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
-      - name: Instalar dependências do projeto
+      - name: Instalar dependências
         run: npm ci
 
-      - name: Instalar dependências do Playwright
+      - name: Instalar navegadores Playwright
         run: npx playwright install --with-deps chromium
 
       - name: Construir a extensão
         run: npm run build
 
-      - name: Instalar o servidor de tela virtual (Xvfb)
-        run: sudo apt-get update && sudo apt-get install -y xvfb
-
+      - name: Instalar e iniciar tela virtual
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb
+          
       - name: Iniciar servidor web em background
         run: npx http-server ./tests -p 3000 &
       
@@ -39,6 +41,13 @@ jobs:
 
       - name: Rodar testes E2E com tela virtual
         run: npm run test:ci
+
+      # ====================================================================
+      # >> PASSO DE DEPURAÇÃO ADICIONADO <<
+      # Este passo vai listar todos os arquivos para vermos se o relatório existe.
+      - name: Listar arquivos no diretório de trabalho
+        run: ls -R
+      # ====================================================================
 
       - name: Upload do relatório do Playwright
         if: always()
