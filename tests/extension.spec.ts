@@ -8,6 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const extensionPath = path.join(__dirname, '../dist');
+const testPagePath = `file://${path.join(__dirname, 'test.html')}`; // Caminho para nossa página local
 
 test.describe('Testes da Extensão Site Time Tracker', () => {
   let browserContext: BrowserContext;
@@ -36,8 +37,12 @@ test.describe('Testes da Extensão Site Time Tracker', () => {
   });
 
   test('O cronômetro flutuante deve aparecer na página', async () => {
-    await page.goto('https://playwright.dev/');
+    // MUDANÇA: Navegando para a nossa página de teste local
+    await page.goto(testPagePath);
+
     const timerContainer = page.locator('.time-tracker-container');
+
+    // O teste agora deve encontrar o elemento de forma confiável
     await expect(timerContainer).toBeVisible({ timeout: 10000 });
     await expect(timerContainer).toHaveText(/Tempo no site: \d{2}:\d{2}:\d{2}/);
   });
