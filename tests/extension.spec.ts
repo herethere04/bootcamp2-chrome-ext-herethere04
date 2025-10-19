@@ -3,12 +3,12 @@ import type { BrowserContext, Page } from '@playwright/test';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-// Correção para obter o __dirname em ES Modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const extensionPath = path.join(__dirname, '../dist');
-const testPagePath = `file://${path.join(__dirname, 'test.html')}`; // Caminho para nossa página local
+// MUDANÇA: Agora usamos a URL do servidor web local
+const testPageURL = 'http://localhost:3000/test.html';
 
 test.describe('Testes da Extensão Site Time Tracker', () => {
   let browserContext: BrowserContext;
@@ -37,12 +37,11 @@ test.describe('Testes da Extensão Site Time Tracker', () => {
   });
 
   test('O cronômetro flutuante deve aparecer na página', async () => {
-    // MUDANÇA: Navegando para a nossa página de teste local
-    await page.goto(testPagePath);
+    // MUDANÇA: Navegando para a URL do servidor local
+    await page.goto(testPageURL);
 
     const timerContainer = page.locator('.time-tracker-container');
 
-    // O teste agora deve encontrar o elemento de forma confiável
     await expect(timerContainer).toBeVisible({ timeout: 10000 });
     await expect(timerContainer).toHaveText(/Tempo no site: \d{2}:\d{2}:\d{2}/);
   });

@@ -33,8 +33,7 @@
     {
       "matches": [
         "http://*/*",
-        "https://*/*",
-        "file://*/*"
+        "https://*/*"
       ],
       "js": ["src/content/content.js"],
       "css": ["src/content/content.css"],
