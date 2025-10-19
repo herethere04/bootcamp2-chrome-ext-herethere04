@@ -1,0 +1,16 @@
+{
+  "name": "site-time-tracker-extension",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Extensão para cronometrar o tempo gasto em sites.",
+  "scripts": {
+    "build": "node scripts/build-extension.mjs",
+    "test:e2e": "playwright test",
+    "test": "npm run build && npm run test:e2e"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.46.0",
+    "archiver": "^7.0.1",
+    "typescript": "^5.4.5"
+  }
+}

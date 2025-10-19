@@ -1,0 +1,9 @@
+# Dependências do Node.js
+node_modules
+
+# Arquivos de build (são gerados pelo CI)
+dist
+playwright-report
+
+# Arquivos do sistema operacional
+.DS_Store
