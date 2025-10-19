@@ -40,7 +40,7 @@ jobs:
         run: npx wait-on http://localhost:3000/test.html --timeout 60000
 
       - name: Rodar testes E2E com tela virtual
-        run: npm run test:ci
+        run: npm run test:ci -- --reporter=html
 
       # ====================================================================
       # >> PASSO DE DEPURAÇÃO ADICIONADO <<
